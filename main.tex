@@ -1,0 +1,201 @@
+\documentclass{rapportECL}
+
+
+
+% ------------- Packages spéciaux, nécessaires pour ce rapport, à insérer ici ------------- 
+%\usepackage{lipsum}
+\usepackage{booktabs} % table
+
+\usepackage{minted}
+%https://www.overleaf.com/learn/latex/Code_Highlighting_with_minted
+
+%https://www.overleaf.com/latex/examples/source-code-highlighting-with-minted-in-latex/qphhfvnsddbs
+
+
+ 
+%\usepackage{listingsutf8} %Display code in LaTeX, using the lstlisting environment
+% https://tex.stackexchange.com/questions/312429/an-error-appears-saying-that-utf8-and-listing-are-not-compatible?rq=1
+
+% to customize the three basic list environments (enumerate, itemize and description) and to design your own lists, with a <key>=<value> syntax.
+% https://tex.stackexchange.com/questions/48036/how-to-represent-cross-and-tick-in-itemize-bullets
+\usepackage{enumitem} %\begin{itemize}[label=$\star$]
+
+%\setlist[itemize,1]{label=$\bullet$}
+\setlist[itemize,2]{label=$\circ$}
+\setlist[itemize,3]{label=$\diamond$}
+
+
+
+\title{Rapport BE Colonie des Fourmis} %Titre du fichier
+
+\begin{document}
+
+%----------- Informations du rapport ---------
+
+\titre{Rapport BE Colonie des Fourmis - } %Titre du fichier .pdf
+\UE{UE INF} %Nom de la UE
+\sujet{S8 Algorithmes collaboratifs et applications} %Nom du sujet
+
+\enseignant{Alexander \textsc{SAIDI}} %Nom de l'enseignant
+
+\eleves{Achraf \textsc{Bella} \\
+		Bruno \textsc{Moreira Nabinger} } %Nom des élèves
+
+%----------- Initialisation -------------------
+        
+\fairemarges %Afficher les marges
+\fairepagedegarde %Créer la page de garde
+\tabledematieres %Créer la table de matières
+
+%------------ Corps du rapport ----------------
+
+
+\section{Introduction} 
+
+% L'objectif de ce Travaux Dirigé est de réaliser une application "Jeu du Pendu" utilisant des animations graphiques avec Tk. Il a aussi comme but la compréhension et la mise en ouvre de la programmation orientée objet. D'après cet objectif, on a conçu une programme du "Jeu du Pendu" qui utilise quelques composants du  module  Python “Tkinter”, permettant de créer des interfaces graphiques. Au programme original ont été ajouté des images et des mots disponibles dans la plateforme Pédagogique. 
+
+
+\section{Cahier des charges}
+
+% Le cahier des charges est le suivant :
+
+% \begin{itemize}
+%     \item gestion du score et de l'historique des parties pour les joueurs ;
+%     \item le clavier doit désactiver les touches déjà utilisées ;
+%     \item les éléments du pendu doivent apparaître au fur et à mesure des échecs du joueur ;
+%     \item un message de félicitations doit être affiché en cas de victoire et la réponse en cas de défaite .
+% \end{itemize}
+
+\section{Principe des Solutions}
+
+%slide 19
+
+
+
+\subsection{Les agents en IA}
+
+\begin{itemize}[label=$\bullet$]
+    \item Soit une route qui lie deux villes v1 et v2 :
+    \begin{itemize}
+        \item On fera "avancer" les fourmis \textbf{pas à pas}.
+        \begin{itemize}
+            \item un pas d’itération fera avancer \textit{d’un pas} chaque fourmi
+        \end{itemize}
+        \item Suite à ce "pas", on modifie l’état de l’agent (fourmi).
+    \end{itemize}
+\end{itemize}
+
+\subsection{Le comportement d’un agent}
+
+Le tableau \ref{tab:Description_des_action_dun_agent_en_fonction_de_chaque_etat} décrit les actions d’un agent en fonction de chaque Etat.
+
+\input{table/tab:Description_des_action_dun_agent_en_fonction_de_chaque_etat.tex}
+
+\begin{itemize}[label=$\bullet$]
+    \item Un agent sur un itinéraire avance d’un pas (une étape) à chaque tour jusqu’à ce qu’il arrive dans une ville.
+    \item Une fois dans la ville, il choisit un itinéraire en fonction de l’intensité de la
+phéromone sur les chemins disponibles.
+    \item Si l’agent trouve la source de nourriture ; il prend la nourriture puis démarre le
+voyage de retour en suivant sa propre piste de phéromone ;
+    \item De retour dans le nid, l’agent laisse la nourriture puis recommence le processus
+à nouveau.
+\end{itemize}
+
+Notons qu’à chaque départ, les agents suivent les pistes ayant un maximum de phéromone. Mais au départ du nid, ils n’ont plus la mémoire de leur "propre" piste.
+
+Notez que toutes ces actions nécessitent des informations locales et une mémoire à court terme permettant à l’agent de reconnaître son propre chemin vers le nid.
+
+% On a crée un diagramme UML (figure \ref{fig: Label du diagramme UML}) avec tous les classes qu'on a eu besoin pour arriver au cahier de charges. On crée une classe Jouer et une classe Historique pour stoker les informations du jouer et de ses parties (fichier jouer.py). Les classes StartPage, PageNon, PageHstorique et PageGame, qui héritent de la classe Frame, bien comme les classes MonBouton, Zoneaffichage et FenPrincipale font l'implementation de la interfaces graphiques et aussi de la gestion des parties (cf. pendu\_interface.py)
+
+% %------ Pour insérer et citer une image centralisée -----
+
+% %\insererfigure{img/TD5_UML.jpg}{13cm}{Diagramme UML}{Label du diagramme UML}
+% % Le premier argument est le chemin pour la photo
+% % Le deuxième est la hauteur de la photo
+% % Le troisième la légende
+% % Le quatrième le label
+
+% %Ici, je cite l'image \ref{fig: Label du diagramme UML}
+
+
+
+% \section{Implementation}
+
+% L'implementation du programme a été faite avec la language Python 3.7. Le docummentation a été fait en utilisant docstrings et des commentaires. On a aussi fait le design du code de tel façon  à aider la compréhension, en choisissant les nome des variables, attributs et méthodes qui explicitent notre solution. Le code est montré dans le topique suivant:
+
+% \subsection{jouer.py}
+
+% \inputminted{python}{scr/jouer.py}
+
+% \subsection{pendu\_interface.py}
+
+% \inputminted{python}{scr/pendu_interface.py}
+
+
+% \subsection{Analyse des résultats}
+
+% \subsubsection{test\_jouer.py}
+
+% Tout d'abord, un code de test seulement pour les classes "Jouer" et "Historique" a été élaboré. Un joueur a été simulé à travers de la création d'un objet "Jouer1" de la classe "Jouer" et des appels à ses méthodes.
+
+% \inputminted{python}{scr/test_jouer.py}
+
+% %------ Pour insérer et citer une image centralisée -----
+% \insererfigure{img/Sortie_du_code_test_jouer_et_fichier.jpg}{12cm}{Sortie du code test\_jouer.py et fichier "Jouer1 ECL.txt" généré}{Label du Sortie du code Part 1}
+% % Le premier argument est le chemin pour la photo
+% % Le deuxième est la hauteur de la photo
+% % Le troisième la légende
+% % Le quatrième le label
+
+% \subsubsection{Test de l'interface graphique}
+
+% On lance les 2 codes pour démarrer une partie. Après avoir saisi notre nom (cf. figure \ref{fig: Label EcranNom}), voici l'interface sur laquelle on arrive (figure \ref{fig: Label Interface accueil}).
+
+% \begin{figure}[H]
+% \insererfigure{img/EcranNom.png}{4cm}{Interface Choisir nom}{Label EcranNom}
+% \end{figure}
+
+% \begin{figure}[H]
+% \insererfigure{img/EcranAccueil.png}{9.6cm}{Interface d'accueil}{Label Interface accueil}
+% \end{figure}
+
+% En cliquant sur "nouvelle partie", on lance une partie et on arrive sur l'écran suivant :
+
+% \begin{figure}[H]
+% \insererfigure{img/NouvellePartie.png}{9.6cm}{Ecran de début de partie}{}
+% \end{figure}
+
+% A la fin du jeu, suivant si l'on a gagné ou perdu, on a les écrans suivants :
+
+% \begin{figure}[H]
+% \insererfigure{img/PartieGagne.png}{9.6cm}{Ecran en cas de victoire}{}
+% \end{figure}
+
+% \begin{figure}[H]
+% \insererfigure{img/PartiePerdu.png}{9.6cm}{Ecran en cas de défaite}{}
+% \end{figure}
+
+% On peut ensuite revenir sur l'écran d'accueil et consulter notre historique, qui se présente sous la forme suivante : 
+
+% \begin{figure}[H]
+% \insererfigure{img/Historique.png}{9.6cm}{Historique}{}
+% \end{figure}
+
+% Cet historique est enregistré dans un document texte associé à chaque nom de joueur :
+
+% \begin{figure}[H]
+% \insererfigure{img/DossierHistorique.png}{9.6cm}{Document associé au joueur "Brice"}{}
+% \end{figure}
+
+% %------ Pour insérer et citer une image centralisée -----
+
+% Remarque : Pour que le code fonctionne, il faut que les images disponible sur pédagogie, la liste des mots ainsi que les codes soient enregistré suivant le chemin suivant : 
+
+% \begin{figure}[H]
+% \insererfigure{img/Chemin.png}{9.6cm}{Chemin pour enregistrer les données}{}
+% \end{figure}
+
+% Les images montrent le fonctionnement du jeu. Il est bien fonctionnel d'après les différents tests
+% réalisés présentés et satisfait au cahier des charges. Les classes StartPage, PageNon, PageHstorique et PageGame, qui héritent de la classe Frame, nous ont permit de avoir plusieurs pages pour le jeu, chacune d'elles contenant les informations pertinentes respectives pour le joueur, sans avoir besoin de créer plusieurs fenêtres. Cela crée une ambiance plus agréable pour l'utilisateur.
+
+\end{document}
