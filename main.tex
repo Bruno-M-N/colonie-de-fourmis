@@ -105,13 +105,25 @@ Notons qu’à chaque départ, les agents suivent les pistes ayant un maximum de
 
 Notez que toutes ces actions nécessitent des informations locales et une mémoire à court terme permettant à l’agent de reconnaître son propre chemin vers le nid.
 
-% \section{Implementation}
+\section{Implementation}
 
-% L'implementation du programme a été faite avec la language Python 3.7. Le docummentation a été fait en utilisant docstrings et des commentaires. On a aussi fait le design du code de tel façon  à aider la compréhension, en choisissant les nome des variables, attributs et méthodes qui explicitent notre solution. Le code est montré dans le topique suivant:
+L'implementation du programme a été faite avec la language Python 3.7. Le docummentation a été fait en utilisant docstrings et des commentaires. On a aussi fait le design du code de tel façon  à aider la compréhension, en choisissant les nome des variables, attributs et méthodes qui explicitent notre solution. Le code est montré dans le topique suivant:
 
-% \subsection{jouer.py}
+\subsection{ville.py}
 
-% \inputminted{python}{scr/jouer.py}
+\inputminted{python}{scr/ville.py}
+
+\subsection{route.py}
+
+\inputminted{python}{scr/route.py}
+
+La fourmi arrive à la SOURCE en utilisant la ROUTE(SOURCE, AVANTSOURCE)
+On ajouté SOURCE sa mémoire;
+
+% La ROUTE devient (villeActuel = self.__routeActuel.getSecondVille, derniere ville de la liste)
+
+% (self.__premiereVille == ville1 and self.__secondeVille == ville2) or (self.__premiereVille == ville2 and self.__secondeVille == ville1)
+
 
 % On a crée un diagramme UML (figure \ref{fig: Label du diagramme UML}) avec tous les classes qu'on a eu besoin pour arriver au cahier de charges. On crée une classe Jouer et une classe Historique pour stoker les informations du jouer et de ses parties (fichier jouer.py). Les classes StartPage, PageNon, PageHstorique et PageGame, qui héritent de la classe Frame, bien comme les classes MonBouton, Zoneaffichage et FenPrincipale font l'implementation de la interfaces graphiques et aussi de la gestion des parties (cf. pendu\_interface.py)
 
