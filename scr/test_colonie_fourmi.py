@@ -85,22 +85,22 @@ class FenPrincipale(Tk):
         self._frame = new_frame
         self._frame.pack()
 
-    def setCivilisation(self, listVilles, listRoutes, nom,
+    def setCivilisation(
+                        self, listVilles, listRoutes, nom,
                         villeNid, villeFood, nIndividus,
                         toursAvantselection, probabiliteMutation, 
                         tauxEvaporation, crossoverSize):
-        self.__civilisation = Civilisation(nom, villeNid, villeFood, nIndividus,
-                                           toursAvantselection,
-                                           probabiliteMutation, 
-                                           tauxEvaporation, 
-                                           crossoverSize)
+        self.__civilisation = Civilisation(
+                nom, villeNid, villeFood, nIndividus, toursAvantselection,
+                probabiliteMutation, tauxEvaporation, crossoverSize)
         # Creation des agents (fourmis)
         listAnts = [Ant(villeNid) for i in range(nIndividus)]
         self.__civilisation.setListRoutes(listRoutes)
         self.__civilisation.setListVilles(listVilles)
         self.__civilisation.setListAnts(listAnts)
 
-    def startCivilisationSimulation(self, frame_class, nMaxTours,
+    def startCivilisationSimulation(
+                                    self, frame_class, nMaxTours,
                                     listVilles, listRoutes, nom,
                                     villeNid, villeFood, nIndividus,
                                     toursAvantselection, probabiliteMutation, 
@@ -111,18 +111,21 @@ class FenPrincipale(Tk):
         #     Au départ, on initialise les paramètres de la manière suivante :
         # for all (i, j) arete du graphe, tij = t0 = m / Cnn
         # Où m est le nombre de fourmis et Cnn est la longueur de la tournée 
-        # réalisée par  l’heuristique "les plus proches voisins" (va simplement # de proche en proche voisin).
+        # réalisée par  l’heuristique "les plus proches voisins" (va simplement
+        # de proche en proche voisin).
         # + Ou bien par tout autre algorithme qui permet de construire 
         # raisonnablement un tour optimisé, au moins localement.
         print("longueurTournee")
-        longueurTournee = Civilisation.longueurTournee(listVilles, villeNid,
+        longueurTournee = Civilisation.longueurTournee(listVilles, 
+                                                       villeNid,
                                                        villeFood)
         pheromoneInitialSurRoutes = nIndividus/longueurTournee
         print("pheromoneInitialSurRoutes : ", pheromoneInitialSurRoutes)
         [arete.setPheromone(pheromoneInitialSurRoutes) for arete in listRoutes]
 
         # Mise à jour pheromone pour les arêtes conectées
-        [ville.updatePheromoneAretesConectees(listRoutes) for ville in listVilles]
+        [ville.updatePheromoneAretesConectees(listRoutes) 
+            for ville in listVilles]
         # print("Routes")
 
         self.setCivilisation(listVilles, listRoutes, nom,
@@ -131,7 +134,8 @@ class FenPrincipale(Tk):
                              tauxEvaporation, crossoverSize)
         
 
-        new_frame = frame_class(self, self.__civilisation, nMaxTours, nomFichier)
+        new_frame = frame_class(self, self.__civilisation,
+                                nMaxTours, nomFichier)
         # Deletes old _frame if it exists, then replaces it with the new frame.
         if self._frame is not None:
             self._frame.destroy()
@@ -178,8 +182,8 @@ class StartPage(Frame):
     """Frame Menu
 
     StartPage correspond à page qui contient un menu pour les autres pages, à
-    savoir PageNom, PageHistorique and PageGame. Elle permettre aussi de sortir
-    du programme quand l'utilisateur clique sur le bouton "Quitter".
+    savoir PageNom, SetupSimulationPage and CreationPage. Elle permettre aussi ]
+    de sortir du programme quand l'utilisateur clique sur le bouton "Quitter".
     """
     def __init__(self, master, civilisation):
         Frame.__init__(self, master)
@@ -335,7 +339,7 @@ class SetupSimulationPage(Frame):
 
         # Création d'une sous boite
         self.__zoneAffichage = ZoneAffichage(self, 640, 640, 'snow2')
-        self.__zoneAffichage.grid(row = 0, column = 1)
+        self.__zoneAffichage.grid(row=0, column=1)
 
 
         if (nomFichier is None):
@@ -346,10 +350,6 @@ class SetupSimulationPage(Frame):
             listVilles, listRoutes, villeNid, villeFood = \
                 fileManager.lireEnvironementDansFichier(nomFichier)
 
-
-        #simulationFrame = Frame(self, height = 640, width = 640, bg = "#faf8ef")
-        #simulationFrame.grid(row = 0, column = 1)#, sticky = W)
-
         def updateEntries():
             print("Numéro Max de tours", nMaxTours.get())
             print("Numéro Max de tours type", nMaxTours.get())
@@ -359,7 +359,10 @@ class SetupSimulationPage(Frame):
             print("Probabilite de Mutation", probabiliteMutationEntry.get())
             print("Taux d'evaporation", tauxEvaporationEntry.get())
             print("Crossover Size", crossoverSize.get())
-            pheromoneInitialSurRoutes.set(self.previewPheromoneInitialSurRoutes(listVilles, listRoutes, villeNid, villeFood, population.get()))
+            pheromoneInitialSurRoutes.set(
+                    self.previewPheromoneInitialSurRoutes(
+                            listVilles, listRoutes, villeNid, villeFood,
+                            population.get()))
             self.setupCanvas(listVilles, listRoutes, villeNid, villeFood, 
                          pheromoneInitialSurRoutes.get())
             # self.__zoneAffichage.delete(ALL)
@@ -368,16 +371,16 @@ class SetupSimulationPage(Frame):
             return char.isdigit()
         
         # Création d'une sous boite
-        leftFrame = Frame(self, height = 640, width = 240, bg = "#eee4da")
-        leftFrame.grid(row = 0, column = 0)#, sticky = W)
+        leftFrame = Frame(self, height=640, width=240, bg="#eee4da")
+        leftFrame.grid(row=0, column=0)#, sticky = W)
 
         validationNumber = leftFrame.register(isNumbersInEntry)
 
         # Seulement pour avoir la bonne mise en page avec grid        
-        leftSpaceLabelColumn0 = Label(leftFrame, text="", bg = "#eee4da")
-        leftSpaceLabelColumn0.grid(row = 0, column = 0, padx = 60, pady = 2)
-        leftSpaceLabelColumn1 = Label(leftFrame, text="", bg = "#eee4da")
-        leftSpaceLabelColumn1.grid(row = 0, column = 1, padx = 60, pady = 2)
+        leftSpaceLabelColumn0 = Label(leftFrame, text="", bg="#eee4da")
+        leftSpaceLabelColumn0.grid(row=0, column=0, padx = 60, pady=2)
+        leftSpaceLabelColumn1 = Label(leftFrame, text="", bg="#eee4da")
+        leftSpaceLabelColumn1.grid(row=0, column=1, padx=60, pady=2)
         
         tour = 0
         nouriture  = 0
@@ -391,11 +394,6 @@ class SetupSimulationPage(Frame):
         tourLabel.grid(row = 1, column = 0)#, padx = 10, pady = 10)
         tourText = Label(leftFrame, text = tour, bg = "#eee4da")
         tourText.grid(row = 1, column = 1)#, padx = 10, pady = 10)
-
-        # populationLabel = Label(leftFrame, text="Population :", bg = "#eee4da")
-        # populationLabel.grid(row = 2, column = 0)#, padx = 10, pady = 10)
-        # populationText = Label(leftFrame, text = population, bg = "#eee4da")
-        # populationText.grid(row = 2, column = 1)#, padx = 10, pady = 10)
 
         nouritureLabel = Label(leftFrame, text="Nouriture :", bg = "#eee4da")
         nouritureLabel.grid(row = 2, column = 0)#, padx = 10, pady = 10)
@@ -417,7 +415,7 @@ class SetupSimulationPage(Frame):
         selectionToursMultiplesLabel = \
             Label(leftFrame, text="Sélection en tours multiples de :",
                   bg = "#eee4da")
-        selectionToursMultiplesLabel.grid(row = 4, column = 0)#, padx = 10, pady = 10)
+        selectionToursMultiplesLabel.grid(row = 4, column = 0)
         selectionToursMultiples = IntVar()
         selectionToursMultiplesEntry = \
             Entry(leftFrame, text = selectionToursMultiples, 
@@ -425,14 +423,13 @@ class SetupSimulationPage(Frame):
                   validatecommand=(validationNumber, '%S'),
                   bg = "#eee4da")
         selectionToursMultiples.set(DEFAULT_SELECTION_TOURS_MULTIPLES)
-        selectionToursMultiplesEntry.grid(row = 4, column = 1)#, padx = 10, pady = 10)
+        selectionToursMultiplesEntry.grid(row = 4, column = 1)
 
         #Entry box
         populationLabel = Label(leftFrame, text="Population :", bg = "#eee4da")
         populationLabel.grid(row = 5, column = 0)#, padx = 10, pady = 10)
         population = IntVar()
-        populationEntry = Entry(leftFrame, text = population,
-                                         bg = "#eee4da")
+        populationEntry = Entry(leftFrame, text = population, bg = "#eee4da")
         population.set(DEFAULT_POPULATION)
         populationEntry.grid(row = 5, column = 1)#, padx = 10, pady = 10)
 
@@ -440,23 +437,22 @@ class SetupSimulationPage(Frame):
         probabiliteMutationLabel = Label(leftFrame, 
                                          text="Probabilite de Mutation :",
                                          bg = "#eee4da")
-        probabiliteMutationLabel.grid(row = 6, column = 0)#, padx = 10, pady = 10)
+        probabiliteMutationLabel.grid(row = 6, column = 0)
         probabiliteMutation = DoubleVar()
         probabiliteMutationEntry = Entry(leftFrame,
                                          text =  probabiliteMutation,
                                          bg = "#eee4da")
         probabiliteMutation.set(DEFAULT_PROBABILITE_MUTATION)
-        probabiliteMutationEntry.grid(row = 6, column = 1)#, padx = 10, pady = 10)
+        probabiliteMutationEntry.grid(row = 6, column = 1)
 
         #Entry box
-        tauxEvaporationLabel = Label(leftFrame, 
-                                         text="Taux d'evaporation :",
-                                         bg = "#eee4da")
+        tauxEvaporationLabel = Label(leftFrame, text="Taux d'evaporation :",
+                                     bg = "#eee4da")
         tauxEvaporationLabel.grid(row = 7, column = 0)#, padx = 10, pady = 10)
         tauxEvaporation = DoubleVar()
         tauxEvaporationEntry = Entry(leftFrame,
-                                         text =  tauxEvaporation,
-                                         bg = "#eee4da")
+                                     text =  tauxEvaporation,
+                                     bg = "#eee4da")
         tauxEvaporation.set(DEFAULT_TAUX_EVAPORATION)
         tauxEvaporationEntry.grid(row = 7, column = 1)#, padx = 10, pady = 10)
 
@@ -466,23 +462,26 @@ class SetupSimulationPage(Frame):
         crossoverSizeLabel.grid(row=8, column=0)#, padx = 10, pady = 10)
         crossoverSize = IntVar()
         crossoverSizeEntry = Entry(leftFrame, text=crossoverSize,
-                               validate="key",      
-                               validatecommand=(validationNumber, '%S'),
-                               bg = "#eee4da")
+                                   validate="key",      
+                                   validatecommand=(validationNumber, '%S'),
+                                   bg = "#eee4da")
         crossoverSize.set(DEFAULT_CROSSOVER_SIZE)
         crossoverSizeEntry.grid(row=8, column=1)#, padx = 10, pady = 10)
 
         #Entry box
-        pheromoneInitialSurRoutesLabel = Label(leftFrame, 
-                                         text="Pheromone initial sur les routes :",
-                                         bg = "#eee4da")
-        pheromoneInitialSurRoutesLabel.grid(row = 9, column = 0)#, padx = 10, pady = 10)
+        pheromoneInitialSurRoutesLabel = Label(
+                leftFrame, text="Pheromone initial sur les routes :",
+                bg = "#eee4da")
+        pheromoneInitialSurRoutesLabel.grid(row = 9, column = 0)
         pheromoneInitialSurRoutes = DoubleVar()
         pheromoneInitialSurRoutesEntry = Entry(leftFrame,
                                          text =  pheromoneInitialSurRoutes,
                                          bg = "#eee4da")
-        pheromoneInitialSurRoutes.set(self.previewPheromoneInitialSurRoutes(listVilles, listRoutes, villeNid, villeFood, population.get()))
-        pheromoneInitialSurRoutesEntry.grid(row = 9, column = 1)#, padx = 10, pady = 10)
+        pheromoneInitialSurRoutes.set(
+                self.previewPheromoneInitialSurRoutes(listVilles, listRoutes,
+                                                      villeNid, villeFood,
+                                                      population.get()))
+        pheromoneInitialSurRoutesEntry.grid(row = 9, column = 1)
 
         self.setupCanvas(listVilles, listRoutes, villeNid, villeFood, 
                          pheromoneInitialSurRoutes.get())
@@ -493,18 +492,18 @@ class SetupSimulationPage(Frame):
 
 
         startSimulation = Button(leftFrame, text="Start Simulation", 
-                                command=lambda: \
-                                master.startCivilisationSimulation(
-                                SimulationPage, nMaxTours.get(),
-                                listVilles, listRoutes,
-                                "Civil", 
-                                villeNid, villeFood,
-                                population.get(),
-                                selectionToursMultiples.get(),
-                                probabiliteMutation.get(),
-                                tauxEvaporation.get(),
-                                crossoverSize.get(),
-                                self.__nomFichier))
+                                 command=lambda: \
+                                 master.startCivilisationSimulation(
+                                 SimulationPage, nMaxTours.get(),
+                                 listVilles, listRoutes,
+                                 "Civil", 
+                                 villeNid, villeFood,
+                                 population.get(),
+                                 selectionToursMultiples.get(),
+                                 probabiliteMutation.get(),
+                                 tauxEvaporation.get(),
+                                 crossoverSize.get(),
+                                 self.__nomFichier))
         startSimulation.grid(row = 11, column = 0)
         
         # Création d'une sous boite
@@ -528,14 +527,22 @@ class SetupSimulationPage(Frame):
         # print(*listVilles, sep='\n')
         listRoutes = []
         # Creation de huit routes
-        listRoutes.append(Route(100, listVilles[0], listVilles[1])) # routeLyonNantes
-        listRoutes.append(Route(100, listVilles[0], listVilles[2])) # routeLyonParis
-        listRoutes.append(Route(100, listVilles[0], listVilles[3])) # routeLyonLille
-        listRoutes.append(Route(100, listVilles[0], listVilles[4])) # routeLyonMarseille
-        listRoutes.append(Route(100, listVilles[1], listVilles[2])) # routeNantesParis
-        listRoutes.append(Route(100, listVilles[1], listVilles[3])) # routeNantesLille
-        listRoutes.append(Route(100, listVilles[1], listVilles[4])) # routeNantesMarseille
-        listRoutes.append(Route(100, listVilles[2], listVilles[3])) # routeParisLille
+        # routeLyonNantes
+        listRoutes.append(Route(100, listVilles[0], listVilles[1]))
+        # routeLyonParis 
+        listRoutes.append(Route(100, listVilles[0], listVilles[2]))
+        # routeLyonLille 
+        listRoutes.append(Route(100, listVilles[0], listVilles[3]))
+        # routeLyonMarseille 
+        listRoutes.append(Route(100, listVilles[0], listVilles[4]))
+        # routeNantesParis 
+        listRoutes.append(Route(100, listVilles[1], listVilles[2]))
+        # routeNantesLille 
+        listRoutes.append(Route(100, listVilles[1], listVilles[3]))
+        # routeNantesMarseille 
+        listRoutes.append(Route(100, listVilles[1], listVilles[4]))
+        # routeParisLille
+        listRoutes.append(Route(100, listVilles[2], listVilles[3]))
 
         # Identifie et stock les arêtes conectées
         for ville in listVilles:
@@ -552,11 +559,12 @@ class SetupSimulationPage(Frame):
         return listVilles, listRoutes, villeNid, villeFood
 
     def previewPheromoneInitialSurRoutes(self, listVilles, listRoutes,
-                                        villeNid, villeFood, nIndividus):
-        #     Au départ, on initialise les paramètres de la manière suivante :
+                                         villeNid, villeFood, nIndividus):
+        # Au départ, on initialise les paramètres de la manière suivante :
         # for all (i, j) arete du graphe, tij = t0 = m / Cnn
         # Où m est le nombre de fourmis et Cnn est la longueur de la tournée 
-        # réalisée par  l’heuristique "les plus proches voisins" (va simplement # de proche en proche voisin).
+        # réalisée par  l’heuristique "les plus proches voisins" (va simplement 
+        # de proche en proche voisin).
         # + Ou bien par tout autre algorithme qui permet de construire 
         # raisonnablement un tour optimisé, au moins localement.
         print("longueurTournee")
@@ -567,7 +575,8 @@ class SetupSimulationPage(Frame):
         [arete.setPheromone(pheromoneInitialSurRoutes) for arete in listRoutes]
 
         # Mise à jour pheromone pour les arêtes conectées
-        [ville.updatePheromoneAretesConectees(listRoutes) for ville in listVilles]
+        [ville.updatePheromoneAretesConectees(listRoutes)
+                for ville in listVilles]
         return pheromoneInitialSurRoutes
 
     def setupCanvas(self, listVilles, listRoutes, villeNid, villeFood, 
@@ -578,7 +587,7 @@ class SetupSimulationPage(Frame):
 class SimulationPage(Frame):
     """Frame page de Simulation
 
-    SimulationPage correspond à page qui contient la description du projet et les crédits. Elle permettre aussi de sortir du programme quand l'utilisateur clique sur le bouton "Quitter".
+    SimulationPage correspond à page qui réalise la simulation
     """
     def __init__(self, master, civilisation, nMaxTours, nomFichier=None):
         Frame.__init__(self, master)
@@ -614,8 +623,11 @@ class SimulationPage(Frame):
         # while (self.__tours < self.__nMaxTours+1):
             # if (self.__tours % 1000 == 0):   
             #     print("Tour : ", self.__tours)
-            #     # print("*self.__listAnts, size", len(self.__listAnts), *self.__listAnts ,sep="\n")
-            #     print("*self.__listRoutes, size", *(self.__civilisation.getListRoutes()),sep="\n")               
+            #     # print("*self.__listAnts, size", 
+            #             len(self.__listAnts), *self.__listAnts ,sep="\n")
+            #     print("*self.__listRoutes, size", 
+            #           *(self.__civilisation.getListRoutes()), sep="\n")
+            #                
             # self.updateInterface()
             # self.__master.updater()    
             # self.__civilisation.tourSuivant(self.__tours)
@@ -640,12 +652,14 @@ class SimulationPage(Frame):
         
         if (longueurTourOptimise is not None):
             self.__zoneAffichageSimulation.delete(ALL)
-            self.__zoneAffichageSimulation.printVillesResult(listVillesTourOptimise,
+            self.__zoneAffichageSimulation.printVillesResult(
+                                listVillesTourOptimise,
                                 self.__civilisation.getListVilles(),
                                 self.__civilisation.getVilleNid(),
                                 self.__civilisation.getVilleFood())
                 
-            self.__zoneAffichageSimulation.printRoutesResult(listRoutesTourOptimise,
+            self.__zoneAffichageSimulation.printRoutesResult(
+                                listRoutesTourOptimise,
                                 self.__civilisation.getListRoutes(),
                                 self.__pheromoneInitialSurRoutes)
         else:
@@ -694,11 +708,13 @@ class SimulationPage(Frame):
             if (self.__tours %550 == 0 or self.__tours > self.__nMaxTours-3):
                 self.__tourText.config(text=str(self.__tours))
 
-                self.__nouritureText.config(text=str(self.__civilisation.getNouritureCollectee()))
+                self.__nouritureText.config(
+                        text=str(self.__civilisation.getNouritureCollectee()))
                 
-                self.__zoneAffichageSimulation.printVilles(self.__civilisation.getListVilles(),
-                                                self.__civilisation.getVilleNid(),
-                                                self.__civilisation.getVilleFood())
+                self.__zoneAffichageSimulation.printVilles(
+                        self.__civilisation.getListVilles(),
+                        self.__civilisation.getVilleNid(),
+                        self.__civilisation.getVilleFood())
                 
                 self.__zoneAffichageSimulation.printRoutes(
                         self.__civilisation.getListRoutes(),
@@ -706,11 +722,14 @@ class SimulationPage(Frame):
 
             elif (self.__tours % (self.__nMaxTours/3) == 0):   
                 print("Tour : ", self.__tours)
-                # print("*self.__listAnts, size", len(self.__listAnts), *self.__listAnts ,sep="\n")
-                print("*self.__listRoutes, size", *(self.__civilisation.getListRoutes()),sep="\n")
+                # print("*self.__listAnts, size",
+                #       len(self.__listAnts), *self.__listAnts ,sep="\n")
+                print("*self.__listRoutes, size", 
+                      *(self.__civilisation.getListRoutes()),sep="\n")
 
             self.__tours = self.__tours + 1
-            self.__idAlarmCallback = self.after(1, lambda: self.updateInterface())
+            self.__idAlarmCallback = self.after(1, 
+                                                lambda: self.updateInterface())
         else:
             self.after_cancel(self.__idAlarmCallback)
             self.result()
@@ -759,12 +778,13 @@ class SimulationPage(Frame):
         selectionToursMultiplesLabel = \
             Label(self.__leftFrame, text="Sélection en tours multiples de :",
                   bg="#eee4da")
-        selectionToursMultiplesLabel.grid(row=4, column=0)#, padx = 10, pady = 10)
+        selectionToursMultiplesLabel.grid(row=4, column=0)
         selectionToursMultiples = self.__civilisation.getSelectionNaturelle()#IntVar()
         selectionToursMultiplesText = \
             Label(self.__leftFrame, text=selectionToursMultiples, bg="#eee4da")
-        #selectionToursMultiples.set(self.__civilisation.getSelectionNaturelle())
-        selectionToursMultiplesText.grid(row=4, column=1)#, padx = 10, pady = 10)
+        #selectionToursMultiples.set(
+        #       self.__civilisation.getSelectionNaturelle())
+        selectionToursMultiplesText.grid(row=4, column=1)
 
         #Text box
         populationLabel = Label(self.__leftFrame, 
@@ -779,11 +799,12 @@ class SimulationPage(Frame):
         probabiliteMutationLabel = Label(self.__leftFrame, 
                                          text="Probabilite de Mutation :",
                                          bg="#eee4da")
-        probabiliteMutation = self.__civilisation.getProbabiliteMutation()#DoubleVar()
+        probabiliteMutation = self.__civilisation.getProbabiliteMutation()
+        #DoubleVar()
         probabiliteMutationLabel.grid(row=6, column=0)#, padx = 10, pady = 10)
         probabiliteMutationText = Label(self.__leftFrame,
-                                         text=probabiliteMutation,
-                                         bg="#eee4da")
+                                        text=probabiliteMutation,
+                                        bg="#eee4da")
         # probabiliteMutation.set(self.__civilisation.getProbabiliteMutation())
         probabiliteMutationText.grid(row=6, column=1)#, padx = 10, pady = 10)
 
@@ -811,10 +832,10 @@ class SimulationPage(Frame):
         pheromoneInitialSurRoutesLabel = Label(
                 self.__leftFrame, text="pheromone Initial sur routes :",
                 bg="#eee4da")
-        pheromoneInitialSurRoutesLabel.grid(row=9, column=0)#, padx = 10, pady = 10)
+        pheromoneInitialSurRoutesLabel.grid(row=9, column=0)
         pheromoneInitialSurRoutesText = Label(self.__leftFrame, 
                 text=self.__pheromoneInitialSurRoutes, bg="#eee4da")
-        pheromoneInitialSurRoutesText.grid(row=9, column=1)#, padx = 10, pady = 10)
+        pheromoneInitialSurRoutesText.grid(row=9, column=1)
  
         # Création d'une sous boite
         self.__rightFrame = Frame(self, height=640, width=240, bg="#eee4da")
@@ -846,7 +867,7 @@ class SimulationPage(Frame):
 class CreditsPage(Frame):
     """Frame page de Crédits
 
-    DescriptionPage correspond à page qui contient la description du projet et les crédits. Elle permettre aussi de sortir du programme quand l'utilisateur clique sur le bouton "Quitter".
+    CreditsPage correspond à page qui contient les crédits du projet.
     """
     def __init__(self, master, civilisation):
         Frame.__init__(self, master)
@@ -859,10 +880,8 @@ class CreditsPage(Frame):
         # Création d'image
         width = 80
         height= 80
-        
-        #image = PhotoImage(file="img/ant.png")#.zoom(35).subsample(32)
+
         canvas = Canvas(self, width = width, height = height)
-        #image = PhotoImage(master = canvas, file="img/ant.png")#.zoom(35).subsample(32)
         self.__image = PhotoImage(master = canvas, file="img/ant.png")
         image = PhotoImage(master = canvas, file="img/ant.png")
         canvas.create_image((width/4, height/4), image = self.__image, 
@@ -890,7 +909,6 @@ class CreditsPage(Frame):
                              "from www.flaticon.com")
         labelCredits.pack()
 
-    
 
 if __name__ == "__main__":
     app = FenPrincipale()

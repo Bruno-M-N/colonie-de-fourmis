@@ -28,7 +28,7 @@ class Ant:
         porteFood (bool): Transporte de la nourriture ou non
         nouritureCollectee (int): Quantité de nouriture collectée par
             cette fourmi
-        nb_fois_sur_meme_route (int): combien de fois ils ont été sur la même 
+        nbFoisSurMemeRoute (int): combien de fois ils ont été sur la même 
             route (arête).
         positionRoute (int): position sur la route (arête) actuel
         routeActuelle (Route): route où la fourmi se trouve dans un instant t.
@@ -117,15 +117,17 @@ class Ant:
                 qui répresent la probabilité qu'une mutation se produise. Après 
                 un croisement, il y a une faible probabilité de mutation.
         """
-        randomCaracteristique =  randint(0, 2)
-        # La sensibilité phéromonale de la fourmi
-        # réels aléatoires choisi dans l'intervale [-5,5]
-        if (randomCaracteristique == 0):
-            self.__alpha =  uniform(-5, 5)
-        elif (randomCaracteristique == 1):
-            self.__beta =  uniform(-5, 5)
-        else:
-            self.__gamma =  uniform(-5, 5)
+        mutation =  uniform(0, 1)
+        if(mutation < probabiliteMutation):
+            randomCaracteristique =  randint(0, 2)
+            # La sensibilité phéromonale de la fourmi
+            # réels aléatoires choisi dans l'intervale [-5,5]
+            if (randomCaracteristique == 0):
+                self.__alpha =  uniform(-5, 5)
+            elif (randomCaracteristique == 1):
+                self.__beta =  uniform(-5, 5)
+            else:
+                self.__gamma =  uniform(-5, 5)
    
     ###########################################################################
 
