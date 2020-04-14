@@ -21,29 +21,69 @@ class Ville: # Declaration de la classe Ville
         x (int): Coordonné x de la ville
         y (int): Coordonné y de la ville
         nom (string): Nom de la ville
+        aretesConectees (list[Route]): Liste des arêtes conectées à la ville
     """
     #  constructeurs
     def __init__(self, x, y, nom):
         self.__x = x # Coordonné x de la ville
         self.__y = y # Coordonné y de la ville
         self.__nom = nom # Nom de la ville
+        self.__aretesConectees = [] # arêtes conectées à la ville
 
     def getX(self):
         return self.__x
 
     def getY(self):
         return self.__y
+    
+    def getNom(self):
+        return self.__nom
+
+    def getAretesConectees(self):
+        return self.__aretesConectees
+
+    def updatePheromoneAretesConectees(self, listAretes):
+        """Réalise la mise à jour de la phéromone des arêtes conectées
+    
+        Méthode qui réalise la mise à jour de la quantité de phéromone des
+        arêtes stockées dans un objet ville. Cette méthode doit être appelée
+        avant le choix de la nouvelle arête par l'agent
+        
+        Parameters:
+            listAretes (list[Route]): liste des toutes les routes de 
+                l'environement
+        Returns:
+            None
+        """
+        for aretesConectees in self.__aretesConectees:
+            for arete in listAretes:
+                if (aretesConectees.memeRoute(arete)):
+                    aretesConectees.setPheromone(arete.getPheromone())
+
 
     def mesAretes(self, listAretes):
-        aretesConectees = []
-        for arete in listAretes:
-            if (self == arete.getPremiereVille() or self == arete.getSecondeVille()):
-                aretesConectees.append(arete)
-        return aretesConectees
+        """Identifie et stock les arêtes conectées
+    
+        Méthode qui identifie et stocke les arêtes conectées à la ville. Cette
+        méthode doit être appelée après la création des villes et des routes
         
+        Parameters:
+            listAretes (list[Route]): liste des toutes les routes de 
+                l'environement
+        Returns:
+            None
+        """
+        self.__aretesConectees = []
+        for arete in listAretes:
+            if (self == arete.getPremiereVille()):
+                self.__aretesConectees.append(arete)
+            elif (self == arete.getSecondeVille()):
+                # aretesConectees.append(arete)
+                self.__aretesConectees.append(Route(arete.getPheromone(), self,
+                                                    arete.getPremiereVille()))
+        # print(*self.__aretesConectees, sep='\n')
 
     #  constructeurs, interface et méthodes auxiliares etc
-
     def __str__(self): # Opérateur d’affichage utilisé par print
         # return 'Nom : {}, Coordonnées : ({}, {})' \
         return '{} ({}, {})' \

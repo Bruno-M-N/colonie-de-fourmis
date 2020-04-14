@@ -47,6 +47,25 @@ class Route:
     def getSecondeVille(self):
         return self.__secondeVille
 
+    def setPheromone(self, pheromone):
+        self.__pheromone = pheromone
+
+    # Simulation de l'évaporation de la phéromone
+    def ajouterPheromone(self, pheromone): 
+        """Représent une augmentation de la phéromone
+
+        Représent une augmentation de la quantité de la phéromone sur l'arête 
+        du graphe.
+        
+        Parameters:
+            pheromone (float): quantité de la phéromone ajouté sur la route,
+                mésure par un nombre réel
+        Returns:
+            None
+        """
+        self.__pheromone = self.__pheromone + pheromone
+
+
     # Simulation de l'évaporation de la phéromone
     def evaporerPheromone(self, tauxEvaporation): 
         """Représent l'évaporation de la phéromone
@@ -63,8 +82,8 @@ class Route:
         self.__pheromone = (1 - tauxEvaporation) * self.__pheromone
 
     #  constructeurs, interface et méthodes auxiliares etc
-    def isRoute(ville1, ville2):
-        """Vérifie s'il la route relie deux Villes
+    def isRoute(self, ville1, ville2):
+        """Vérifie si la route relie deux Villes
 
         Parameters:
             ville1 (Ville): Ville potentiellement connectée à cette route
@@ -73,16 +92,35 @@ class Route:
             bool: True indique que la route relie le deux villes
                 False indique que la route ne relie pas le deux villes
         """
-        if (self.__premiereVille == ville1 and 
+        if ((self.__premiereVille == ville1 and 
             self.__secondeVille == ville2) or (self.__premiereVille == ville2
-            and self.__secondeVille == ville1):
+            and self.__secondeVille == ville1)):
+            return True
+        return False
+
+    def memeRoute(self, routeTest):
+        """Vérifie si deux routes sont identiques
+
+        Parameters:
+            routeTest (Route): Route potentiellement identique à cette route
+        Returns:
+            bool: True indique que la route correspond à cette route
+                False indique que la route ne correspond pas à cette route
+        """
+        if ((self.__premiereVille == routeTest.getPremiereVille() and 
+            self.__secondeVille == routeTest.getSecondeVille()) or
+            (self.__premiereVille == routeTest.getSecondeVille()
+            and self.__secondeVille == routeTest.getPremiereVille())):
             return True
         return False
 
     def __str__(self): # Opérateur d’affichage utilisé par print
-        return 'Premier Ville : {} - Seconde Ville : {},  Longueur = {},' \
-        ' pheromone = {}'.format(self.__premiereVille, \
+        return 'Ville1:{0} - Ville2:{1},  d={2:6.3f},' \
+        ' pheromone={3:10.7f}'.format(self.__premiereVille, \
         self.__secondeVille, self.__longueur, self.__pheromone)
+        # return 'Premier Ville : {0} - Seconde Ville : {1},  Longueur = {2:7.4f},' \
+        # ' pheromone = {3:7.4f}'.format(self.__premiereVille, \
+        # self.__secondeVille, self.__longueur, self.__pheromone)
 
 # Test class Route
 if __name__ == '__main__':
@@ -108,3 +146,5 @@ if __name__ == '__main__':
     print("\t2 ", routeLyonParis)
     print("\t3 ", routeLyonLille)
     print("\t4 ", routeLyonMarseille)
+    ville1.mesAretes([routeLyonNantes, routeLyonParis, 
+                      routeLyonLille, routeLyonMarseille])
