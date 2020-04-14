@@ -52,10 +52,9 @@
 
 \section{Introduction} 
 
- L'objectif de ce Travaux Dirigé est de réaliser une application "Jeu du Pendu" utilisant des animations graphiques avec Tk. Il a aussi comme but la compréhension et la mise en ouvre de la programmation orientée objet. D'après cet objectif, on a conçu une programme du "Jeu du Pendu" qui utilise quelques composants du  module  Python “Tkinter”, permettant de créer des interfaces graphiques. Au programme original ont été ajouté des images et des mots disponibles dans la plateforme Pédagogique. 
+ L'objectif de ce Bureau d'Études (BE) est de réaliser l’implémentation d’un système multi-agents de recherche du chemin le plus court (PCC) suivant le principe de la stigmergie et utilisant les algorithmes génétiques. Basée sur la modélisation initiale de la colonie de fourmis présente en cours, une application a été développe pour permettre de résoudre plusieurs problèmes de recherche du PCC. On souhaite aussi étudier les comportement des algorithmes génétiques dans ce cas d'implémentation. L'un des objectifs spécifiques est donc de d'avoir un logicielle dont les paramétrés de simulation sont facilement réglables. Ainsi, une interface graphique a été développé.
 
-
-\section{Cahier des charges}
+% \section{Cahier des charges}
 
 % Le cahier des charges est le suivant :
 
@@ -105,9 +104,99 @@ Notons qu’à chaque départ, les agents suivent les pistes ayant un maximum de
 
 Notez que toutes ces actions nécessitent des informations locales et une mémoire à court terme permettant à l’agent de reconnaître son propre chemin vers le nid.
 
-\section{Implementation}
+\section{Explication de l'interface}
 
-L'implementation du programme a été faite avec la language Python 3.7. Le docummentation a été fait en utilisant docstrings et des commentaires. On a aussi fait le design du code de tel façon  à aider la compréhension, en choisissant les nome des variables, attributs et méthodes qui explicitent notre solution. Le code est montré dans le topique suivant:
+Explication de l’utilisation de l’interface : 
+
+Dans l’interface nous avons implanter 6 boutons chacun à son fonctionnement 
+Le premier bouton c’est pour créer un environnement
+Le deuxième bouton c’est pour importer un environnement déjà exister dans l’ordinateur
+Le troisième buton c’est une démonstration pour montrer à l’utilisateur que le programme ça marche bien.
+Le buton description pour avoir une idée sur le fonctionnement de l’application 
+Et puis deux boutons crédits et quitter.
+ 
+ \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{1.png}
+    \caption{ l'interface de l'utilisateur }
+    \label{Dim}
+\end{figure}\\
+ 
+Pour générer un graphe il suffit de click sur l’interface et définir les villes comme montre la figure suivante 
+
+ \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{2.png}
+    \caption{ Ville dans l'interface }
+    \label{Dim}
+\end{figure}\\
+
+Puis il faut définir pour les relations entre les villes pour cela il suffit de cliquer sur une ville pour être sure la couleur de la ville tourne en orange puis cliquant sur une autre ville pour définir la relation comme montre la figure.
+
+ \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{3.png}
+    \caption{ exemple d'exusion de programme }
+    \label{Dim}
+\end{figure}\\
+
+Dans l’interface nous avons le nombre de tours qui correspond à un pas dans fait par une fourni, en ce qui concerne la nourriture en le comptabilise à chaque fois une fourni trouver sans chemin de retour.
+Aussi le bouton population qui définir le nombre des agents pour notre cas c’est le nombre des fourni 
+Le bouton de probabilité de mutation fonction comme suivant en générer un nombre alectorie si c’est plus grand que la probabilité donnée en fait une mutation à la fourni.
+Le taux d’évaporation représente le processus d’évaporation chez les fournis, qui est une fonction décroissante sous forme de X   expo(-X)    
+Taille de Croissover pour définir le nombre des agents pour faire le croissement.
+
+\section{Algorithme Génétique}
+
+Pour exécuter le programme il faut être conscient de quelque anomalie.
+Dans un graphe qui contient un sous graphe fermé et qui ne contient pas ni de ville de nid ou de ville 
+de source il y a des fournis qui perdre leur chemin c’est-à-dire il font des tours infinis jusqu’à
+L’algorithme élimine les fournis qui ne revient pas au nid.\\
+
+Il faut assurer que le graphe choisi ne doit pas avoir une structure cyclique, comme l'exemple du graphe triangle.
+
+la figure ci-dessous montre une mauvais solution vu que la plupart des agents choisissent un le mauvais chemin.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{triangle-mauvaise-solution.jpg}
+    \caption{ exemple de graphe cyclique }
+    \label{Dim}
+\end{figure}\\
+
+la figure ce-dessous montre le contraire, vu que nous avons choisi des bonnes paramètre , nous conclurons que le choix de paramètre à un impact sur la solution 
+
+Les fournis qui sont perdu dans un boucle il ne représente pas des fournis de bonne explorateur.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{ triangle-bonne-solution.jpg}
+    \caption{ exemple de graphe cyclique }
+    \label{Dim}
+\end{figure}\\
+
+
+
+En ce qui concerne le tri, le tri se fait deux fois par rapport les travailles et les explorateurs par conséquence la fonction croissement (Crossover) généré deux enfants un par représente les travailleurs et un ’autre représente les explorateurs.
+
+\newpage
+l'une des spécificité de les algorithme génétique c'est que il ne sont pas exacte mais il donnent une solution approximative, pour le probleme de colonie de founie il y a pour beaucoup de situation l'algorithme il ne trouve pas de solution pour il est nécessaire de faire plusieurs tentative pour trouver les bonnes parametre qui permet à l'algorithme de trouver une solution faisable.
+
+
+\section{Implémentation}
+
+L'implémentation du programme a été faite avec la langage Python 3.8.1. Le documentation a été fait en utilisant docstrings et des commentaires. On a aussi fait le design du code de tel façon  à aider la compréhension, en choisissant les nome des variables, attributs et méthodes qui explicitent notre solution. Le code est montré dans les sous-sections suivants:
+
+La mise en ouvre pour la modélisation utilise la programmation orientée objet. On a utilisé quelques composants du module  Python “Tkinter”, permettant de créer des interfaces graphiques.. 
+
+Pour bien modéliser notre problème nous avons utiliser UML
+
+ \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{UML-Civilisation-Fourmi-Route-Ville-UML.jpg}
+    \caption{  Diagramme UML  }
+    \label{Dim}
+\end{figure}\\
 
 \subsection{ville.py}
 
@@ -117,8 +206,28 @@ L'implementation du programme a été faite avec la language Python 3.7. Le docu
 
 \inputminted{python}{scr/route.py}
 
-La fourmi arrive à la SOURCE en utilisant la ROUTE(SOURCE, AVANTSOURCE)
-On ajouté SOURCE sa mémoire;
+\subsection{ant.py}
+
+\inputminted{python}{scr/ant.py}
+
+\subsection{civilisation.py}
+
+\inputminted{python}{scr/civilisation.py}
+
+\subsection{\text{zoneaffichage.py}}
+
+\inputminted{python}{scr/zoneaffichage.py}
+
+\subsection{\text{file\_manager.py}}
+
+\inputminted{python}{scr/file_manager.py}
+
+\subsection{\text{test\_colonie\_fourmi.py}}
+
+\inputminted{python}{scr/test_colonie_fourmi.py}
+
+% La fourmi arrive à la SOURCE en utilisant la ROUTE(SOURCE, AVANTSOURCE)
+% On ajouté SOURCE sa mémoire;
 
 % La ROUTE devient (villeActuel = self.__routeActuel.getSecondVille, derniere ville de la liste)
 
